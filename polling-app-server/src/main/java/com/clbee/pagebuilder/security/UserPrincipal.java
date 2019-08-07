@@ -18,15 +18,13 @@ import java.util.stream.Collectors;
 @Data
 @AllArgsConstructor
 public class UserPrincipal implements UserDetails {
-    private Long id;
 
-    private String name;
+	private static final long serialVersionUID = 1L;
 
-    private String username;
-
-    @JsonIgnore
+	private Long id;
+    private String fullname;
     private String email;
-
+    private String username;
     @JsonIgnore
     private String password;
 
@@ -39,9 +37,9 @@ public class UserPrincipal implements UserDetails {
 
         return new UserPrincipal(
                 user.getId(),
-                user.getLastname() + " " + user.getFirstname() ,
-                user.getUsername(),
+                user.getFullname(),
                 user.getEmail(),
+                user.getUsername(),
                 user.getPassword(),
                 authorities
         );

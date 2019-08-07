@@ -5,6 +5,6 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class UserIdentityAvailability {
+public class DocumentNameIdentityAvailability {
     private Boolean available;
 }

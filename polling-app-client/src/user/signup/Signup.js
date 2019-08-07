@@ -3,7 +3,7 @@ import { signup, checkUsernameAvailability, checkEmailAvailability } from '../..
 import './Signup.css';
 import { Link } from 'react-router-dom';
 import { 
-    NAME_MIN_LENGTH, NAME_MAX_LENGTH, 
+    FULLNAME_MIN_LENGTH, FULLNAME_MAX_LENGTH, 
     USERNAME_MIN_LENGTH, USERNAME_MAX_LENGTH,
     EMAIL_MAX_LENGTH,
     PASSWORD_MIN_LENGTH, PASSWORD_MAX_LENGTH
@@ -16,11 +16,8 @@ class Signup extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            lastname: {
+            fullname: {
                 value: '' 
-            },
-            firstname: {
-                value: ''
             },
             username: {
                 value: ''
@@ -56,8 +53,7 @@ class Signup extends Component {
         event.preventDefault();
     
         const signupRequest = {
-            lastname: this.state.lastname.value,
-            firstname: this.state.firstname.value,
+            fullname: this.state.fullname.value,
             email: this.state.email.value,
             username: this.state.username.value,
             password: this.state.password.value
@@ -78,8 +74,7 @@ class Signup extends Component {
     }
 
     isFormInvalid() {
-        return !(this.state.lastname.validateStatus === 'success' &&
-            this.state.firstname.validateStatus === 'success' &&
+        return !(this.state.fullname.validateStatus === 'success' &&
             this.state.username.validateStatus === 'success' &&
             this.state.email.validateStatus === 'success' &&
             this.state.password.validateStatus === 'success'
@@ -93,28 +88,16 @@ class Signup extends Component {
                 <div className="signup-content">
                     <Form onSubmit={this.handleSubmit} className="signup-form">
                         <FormItem 
-                            label="Last Name"
-                            validateStatus={this.state.lastname.validateStatus}
-                            help={this.state.lastname.errorMsg}>
+                            label="Full Name"
+                            validateStatus={this.state.fullname.validateStatus}
+                            help={this.state.fullname.errorMsg}>
                             <Input 
                                 size="large"
-                                name="lastname"
+                                name="fullname"
                                 autoComplete="off"
-                                placeholder="Your last name"
-                                value={this.state.lastname.value} 
-                                onChange={(event) => this.handleInputChange(event, this.validateName)} />    
-                        </FormItem>
-                        <FormItem 
-                            label="First Name"
-                            validateStatus={this.state.firstname.validateStatus}
-                            help={this.state.firstname.errorMsg}>
-                            <Input 
-                                size="large"
-                                name="firstname"
-                                autoComplete="off"
-                                placeholder="Your first name"
-                                value={this.state.firstname.value} 
-                                onChange={(event) => this.handleInputChange(event, this.validateName)} />    
+                                placeholder="Your full name"
+                                value={this.state.fullname.value} 
+                                onChange={(event) => this.handleInputChange(event, this.validateFullname)} />    
                         </FormItem>
                         <FormItem label="Username"
                             hasFeedback
@@ -153,7 +136,7 @@ class Signup extends Component {
                                 name="password" 
                                 type="password"
                                 autoComplete="off"
-                                placeholder="A password between 6 to 20 characters" 
+                                placeholder="A password between 5 to 20 characters" 
                                 value={this.state.password.value} 
                                 onChange={(event) => this.handleInputChange(event, this.validatePassword)} />    
                         </FormItem>
@@ -173,16 +156,16 @@ class Signup extends Component {
 
     // Validation Functions
 
-    validateName = (name) => {
-        if(name.length < NAME_MIN_LENGTH) {
+    validateFullname = (fullname) => {
+        if(fullname.length < FULLNAME_MIN_LENGTH) {
             return {
                 validateStatus: 'error',
-                errorMsg: `Name is too short (Minimum ${NAME_MIN_LENGTH} characters needed.)`
+                errorMsg: `Name is too short (Minimum ${FULLNAME_MIN_LENGTH} characters needed.)`
             }
-        } else if (name.length > NAME_MAX_LENGTH) {
+        } else if (fullname.length > FULLNAME_MAX_LENGTH) {
             return {
                 validationStatus: 'error',
-                errorMsg: `Name is too long (Maximum ${NAME_MAX_LENGTH} characters allowed.)`
+                errorMsg: `Name is too long (Maximum ${FULLNAME_MAX_LENGTH} characters allowed.)`
             }
         } else {
             return {

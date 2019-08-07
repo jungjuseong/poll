@@ -1,4 +1,4 @@
-package com.clbee.pagebuilder.payload;
+package com.clbee.pagebuilder.payload.poll;
 import javax.validation.constraints.NotNull;
 
 public class VoteRequest {

@@ -18,63 +18,50 @@ import java.util.Set;
 @Data
 @NoArgsConstructor
 @Entity
-@Table(name = "poll_users", uniqueConstraints = {
+@Table(name = "pb_users", uniqueConstraints = {
         @UniqueConstraint(columnNames = {
-            "user_id"
+            "username"
         }),
         @UniqueConstraint(columnNames = {
             "email"
         })
 })
 @JsonIgnoreProperties(
-        value = {"last_name", "first_name"},
+        value = {"fullname"},
         allowGetters = true
 )
 public class User extends DateAudit {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name ="user_seq")
     private Long id;
 
-    @Size(max = 20)
-    @Column(name ="last_name")
-    private String lastname;
-
-    @Size(max = 20)
-    @Column(name ="first_name")
-    private String firstname;
-    
-    
-    @NotBlank
-    @Size(max = 15)
-    @Column(name ="user_id")
-    private String username;
+    @Size(max = 30)
+    private String fullname;
 
     @NaturalId
     @NotBlank
-    @Size(max = 40)
+    @Size(max = 30)
     @Email
     private String email;
 
     @NotBlank
-    @Size(max = 100)
-    @Column(name ="user_pw")
+    @Size(max = 20)
+    private String username;
+
+    @NotBlank
+    @Size(max = 120)
     private String password;
 
     @ManyToMany(fetch = FetchType.LAZY)
-    @JoinTable(name = "poll_user_roles",
+    @JoinTable(name = "pb_user_roles",
             joinColumns = @JoinColumn(name = "user_seq"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    public User(String lastname, String firstname, String username, String email, String password) {
-        this.lastname = lastname;
-        this.firstname = firstname;
-
-        this.username = username;
+    public User(String fullname, String email, String username, String password) {
+        this.fullname = fullname;
         this.email = email;
+        this.username = username;
         this.password = password;
     }
-
-
 }

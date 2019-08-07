@@ -9,8 +9,9 @@ import {
 import { getCurrentUser } from '../util/APIUtils';
 import { ACCESS_TOKEN } from '../constants';
 
-import PollList from '../poll/PollList';
-import NewPoll from '../poll/NewPoll';
+import DocumentList from '../document/DocumentList';
+import NewDocument from '../document/NewDocument';
+
 import Login from '../user/login/Login';
 import Signup from '../user/signup/Signup';
 import Profile from '../user/profile/Profile';
@@ -63,7 +64,7 @@ class App extends Component {
     this.loadCurrentUser();
   }
 
-  handleLogout(redirectTo="/", notificationType="success", description="로그아웃되었습니다.") {
+  handleLogout(redirectTo="/", notificationType="success", description="로그아웃 되었습니다.") {
     localStorage.removeItem(ACCESS_TOKEN);
 
     this.setState({
@@ -100,18 +101,24 @@ class App extends Component {
 
           <Content className="app-content">
             <div className="container">
-              <Switch>      
+              <Switch>
+              
                 <Route exact path="/" 
-                  render={(props) => <PollList isAuthenticated={this.state.isAuthenticated} 
+                  render={(props) => <DocumentList isAuthenticated={this.state.isAuthenticated} 
                       currentUser={this.state.currentUser} handleLogout={this.handleLogout} {...props} />}>
                 </Route>
+
                 <Route path="/login" 
                   render={(props) => <Login onLogin={this.handleLogin} {...props} />}></Route>
+
                 <Route path="/signup" component={Signup}></Route>
+
                 <Route path="/users/:username" 
                   render={(props) => <Profile isAuthenticated={this.state.isAuthenticated} currentUser={this.state.currentUser} {...props}  />}>
                 </Route>
-                <PrivateRoute authenticated={this.state.isAuthenticated} path="/poll/new" component={NewPoll} handleLogout={this.handleLogout}></PrivateRoute>
+
+                <PrivateRoute authenticated={this.state.isAuthenticated} path="/document/new" component={NewDocument} handleLogout={this.handleLogout}></PrivateRoute>
+
                 <Route component={NotFound}></Route>
               </Switch>
             </div>

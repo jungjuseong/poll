@@ -1,56 +1,25 @@
 package com.clbee.pagebuilder.payload;
 
+import lombok.Data;
+
 import javax.validation.constraints.*;
 
+@Data
 public class SignUpRequest {
-    @Size(min = 2, max = 20)
-    private String lastname;
 
-    @Size(min = 1, max = 20)
-    private String firstname;
-    
-    @NotBlank
-    @Size(min = 3, max = 15)
-    private String username;
+    @Size(min = 1, max = 30)
+    private String fullname;
 
     @NotBlank
-    @Size(max = 40)
+    @Size(max = 30)
     @Email
     private String email;
 
     @NotBlank
-    @Size(min = 6, max = 20)
+    @Size(min = 3, max = 20)
+    private String username;
+
+    @NotBlank
+    @Size(min = 5, max = 20)
     private String password;
-
-    public String getLastname() {
-        return lastname;
-    }
-    
-    public String getFirstname() {
-        return firstname;
-    }
-
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
 }

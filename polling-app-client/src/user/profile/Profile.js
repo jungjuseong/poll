@@ -1,13 +1,16 @@
 import React, { Component } from 'react';
-import PollList from '../../poll/PollList';
-import { getUserProfile } from '../../util/APIUtils';
 import { Avatar, Tabs } from 'antd';
+
+import DocumentList from '../../document/DocumentList';
+import { getUserProfile } from '../../util/APIUtils';
+
 import { getAvatarColor } from '../../util/Colors';
 import { formatDate } from '../../util/Helpers';
 import LoadingIndicator  from '../../common/LoadingIndicator';
-import './Profile.css';
 import NotFound from '../../common/NotFound';
 import ServerError from '../../common/ServerError';
+
+import './Profile.css';
 
 const TabPane = Tabs.TabPane;
 
@@ -82,12 +85,12 @@ class Profile extends Component {
                         <div className="user-profile">
                             <div className="user-details">
                                 <div className="user-avatar">
-                                    <Avatar className="user-avatar-circle" style={{ backgroundColor: getAvatarColor(this.state.user.name)}}>
-                                        {this.state.user.name[0].toUpperCase()}
+                                    <Avatar className="user-avatar-circle" style={{ backgroundColor: getAvatarColor(this.state.user.fullname)}}>
+                                        {this.state.user.fullname.toUpperCase()}
                                     </Avatar>
                                 </div>
                                 <div className="user-summary">
-                                    <div className="full-name">{this.state.user.name}</div>
+                                    <div className="full-name">{this.state.user.fullname}</div>
                                     <div className="username">@{this.state.user.username}</div>
                                     <div className="user-joined">
                                         Joined {formatDate(this.state.user.joinedAt)}
@@ -100,12 +103,11 @@ class Profile extends Component {
                                     tabBarStyle={tabBarStyle}
                                     size="large"
                                     className="profile-tabs">
-                                    <TabPane tab={`${this.state.user.pollCount} Polls`} key="1">
-                                        <PollList username={this.props.match.params.username} type="USER_CREATED_POLLS" />
+                                    <TabPane tab={`${this.state.user.documentCount} 문서`}  key="1">
+                                        <DocumentList username={this.props.match.params.username} type="USER_CREATED_DOCUMENTS" />
                                     </TabPane>
-                                    <TabPane tab={`${this.state.user.voteCount} Votes`}  key="2">
-                                        <PollList username={this.props.match.params.username} type="USER_VOTED_POLLS" />
-                                    </TabPane>
+
+
                                 </Tabs>
                             </div>  
                         </div>  

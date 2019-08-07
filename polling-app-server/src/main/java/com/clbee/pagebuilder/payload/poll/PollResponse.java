@@ -1,5 +1,7 @@
-package com.clbee.pagebuilder.payload;
+package com.clbee.pagebuilder.payload.poll;
 
+import com.clbee.pagebuilder.payload.UserSummary;
+import com.clbee.pagebuilder.payload.poll.ChoiceResponse;
 import com.fasterxml.jackson.annotation.JsonInclude;
 
 import lombok.Data;

@@ -9,9 +9,10 @@ import lombok.Data;
 @AllArgsConstructor
 public class UserProfile {
     private Long id;
+
     private String username;
-    private String name;
+    private String fullname;
+    private String email;
     private Instant joinedAt;
-    private Long pollCount;
-    private Long voteCount;
+    private Long documentCount;
 }

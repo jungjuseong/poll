@@ -1,8 +1,11 @@
 import React, { Component } from 'react';
+
+import { FileUploader } from '../file/FileUploader';
 import { createPoll } from '../util/APIUtils';
 import { MAX_CHOICES, POLL_QUESTION_MAX_LENGTH, POLL_CHOICE_MAX_LENGTH } from '../constants';
 import './NewPoll.css';  
 import { Form, Input, Button, Icon, Select, Col, notification } from 'antd';
+
 const Option = Select.Option;
 const FormItem = Form.Item;
 const { TextArea } = Input
@@ -175,6 +178,7 @@ class NewPoll extends Component {
             <div className="new-poll-container">
                 <h1 className="page-title">Create Poll</h1>
                 <div className="new-poll-content">
+                    <FileUploader />
                     <Form onSubmit={this.handleSubmit} className="create-poll-form">
                         <FormItem validateStatus={this.state.question.validateStatus}
                             help={this.state.question.errorMsg} className="poll-form-row">

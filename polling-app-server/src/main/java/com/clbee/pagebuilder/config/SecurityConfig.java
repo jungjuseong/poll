@@ -16,9 +16,9 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.clbee.pagebuilder.security.CustomUserDetailsService;
 import com.clbee.pagebuilder.security.JwtAuthenticationEntryPoint;
 import com.clbee.pagebuilder.security.JwtAuthenticationFilter;
+import com.clbee.pagebuilder.service.CustomUserDetailsService;
 
 @Configuration
 @EnableWebSecurity
@@ -30,7 +30,7 @@ import com.clbee.pagebuilder.security.JwtAuthenticationFilter;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    CustomUserDetailsService customUserDetailsService;
+    CustomUserDetailsService userDetailsService;
 
     @Autowired
     private JwtAuthenticationEntryPoint unauthorizedHandler;
@@ -41,10 +41,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Override
-    public void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-        authenticationManagerBuilder
-                .userDetailsService(customUserDetailsService)
-                .passwordEncoder(passwordEncoder());
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+    	auth
+            .userDetailsService(userDetailsService)
+            .passwordEncoder(encoder());
     }
 
     @Bean(BeanIds.AUTHENTICATION_MANAGER)
@@ -54,13 +54,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
     @Bean
-    public PasswordEncoder passwordEncoder() {
+    public PasswordEncoder encoder() {
         return new BCryptPasswordEncoder();
     }
 
     @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
+    protected void configure(HttpSecurity httpSecurity) throws Exception {
+    	httpSecurity
                 .cors()
                     .and()
                 .csrf()
@@ -72,27 +72,19 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                     .and()
                 .authorizeRequests()
-                    .antMatchers("/",
-                        "/favicon.ico",
-                        "/**/*.png",
-                        "/**/*.gif",
-                        "/**/*.svg",
-                        "/**/*.jpg",
-                        "/**/*.html",
-                        "/**/*.css",
-                        "/**/*.js")
-                        .permitAll()
-                    .antMatchers("/api/auth/**")
-                        .permitAll()
-                    .antMatchers("/api/user/checkUsernameAvailability", "/api/user/checkEmailAvailability")
-                        .permitAll()
-                    .antMatchers(HttpMethod.GET, "/api/polls/**", "/api/users/**")
-                        .permitAll()
-                    .anyRequest()
-                        .authenticated();
+                    .antMatchers("/", "/favicon.ico", "/**/*.png", "/**/*.gif", "/**/*.svg", "/**/*.jpg",
+                        "/**/*.html", "/**/*.css", "/**/*.js").permitAll()
+                    .antMatchers("/api/auth/**").permitAll()
+                    .antMatchers("/api/user/checkUsernameAvailability", "/api/user/checkEmailAvailability").permitAll()
+                    .antMatchers(HttpMethod.GET, "/api/documents/**","/api/polls/**", "/api/users/**").permitAll()
+                    .antMatchers(HttpMethod.POST, "/api/documents/**","/api/file/**").permitAll()
+                    .antMatchers(HttpMethod.PUT, "/api/documents/**").permitAll()
+                    .antMatchers(HttpMethod.DELETE, "/api/documents/**").permitAll()
+                .anyRequest()
+                .authenticated();
 
         // Add our custom JWT security filter
-        http.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+    	httpSecurity.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 
     }
 }

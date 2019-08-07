@@ -9,12 +9,11 @@ import org.springframework.web.bind.annotation.*;
 import com.clbee.pagebuilder.exception.ResourceNotFoundException;
 import com.clbee.pagebuilder.model.User;
 import com.clbee.pagebuilder.payload.*;
-import com.clbee.pagebuilder.repository.PollRepository;
 import com.clbee.pagebuilder.repository.UserRepository;
-import com.clbee.pagebuilder.repository.VoteRepository;
 import com.clbee.pagebuilder.security.CurrentUser;
 import com.clbee.pagebuilder.security.UserPrincipal;
-import com.clbee.pagebuilder.service.PollService;
+import com.clbee.pagebuilder.service.DocumentService;
+
 import com.clbee.pagebuilder.util.AppConstants;
 
 @RestController
@@ -25,20 +24,14 @@ public class UserController {
     private UserRepository userRepository;
 
     @Autowired
-    private PollRepository pollRepository;
-
-    @Autowired
-    private VoteRepository voteRepository;
-
-    @Autowired
-    private PollService pollService;
+    private DocumentService documentService;
 
     private static final Logger logger = LoggerFactory.getLogger(UserController.class);
 
     @GetMapping("/user/me")
     @PreAuthorize("hasRole('USER')")
     public UserSummary getCurrentUser(@CurrentUser UserPrincipal currentUser) {
-        UserSummary userSummary = new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getName());
+        UserSummary userSummary = new UserSummary(currentUser.getId(), currentUser.getUsername(), currentUser.getFullname(), currentUser.getEmail());
         return userSummary;
     }
 
@@ -59,29 +52,17 @@ public class UserController {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
 
-        Long pollCount = pollRepository.countByCreatedBy(user.getId());
-        Long voteCount = voteRepository.countByUserId(user.getId());
+        Long documentCount = documentService.getDocumentCountByCreatedBy(user.getId());
 
-        UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(), user.getLastname() + " " + user.getFirstname(), user.getCreatedAt(), pollCount, voteCount);
+        UserProfile userProfile = new UserProfile(user.getId(), user.getUsername(), user.getFullname(), user.getEmail(), user.getCreatedAt(), documentCount);
 
         return userProfile;
     }
 
-    @GetMapping("/users/{username}/polls")
-    public PagedResponse<PollResponse> getPollsCreatedBy(@PathVariable(value = "username") String username,
-                                                         @CurrentUser UserPrincipal currentUser,
-                                                         @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
-                                                         @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
-        return pollService.getPollsCreatedBy(username, currentUser, page, size);
+    @GetMapping("/users/{username}/documents")
+    public PagedResponse<DocumentResponse> getDocumentsCreatedBy(@PathVariable(value = "username") String username,
+                 @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+                 @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
+        return documentService.getDocumentsCreatedBy(username, page, size);
     }
-
-
-    @GetMapping("/users/{username}/votes")
-    public PagedResponse<PollResponse> getPollsVotedBy(@PathVariable(value = "username") String username,
-                                                       @CurrentUser UserPrincipal currentUser,
-                                                       @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
-                                                       @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
-        return pollService.getPollsVotedBy(username, currentUser, page, size);
-    }
-
 }

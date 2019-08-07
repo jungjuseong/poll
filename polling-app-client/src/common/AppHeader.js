@@ -4,7 +4,9 @@ import {
     withRouter
 } from 'react-router-dom';
 import './AppHeader.css';
+
 import pollIcon from '../poll.svg';
+
 import { Layout, Menu, Dropdown, Icon } from 'antd';
 const Header = Layout.Header;
     
@@ -29,12 +31,14 @@ class AppHeader extends Component {
                 <Icon type="home" className="nav-icon" />
               </Link>
             </Menu.Item>,
-            <Menu.Item key="/poll/new">
-            <Link to="/poll/new">
-              <img src={pollIcon} alt="poll" className="poll-icon" />
-            </Link>
-          </Menu.Item>,
-          <Menu.Item key="/profile" className="profile-menu">
+
+            <Menu.Item key="/document/new">
+              <Link to="/document/new">
+                <img src={pollIcon} alt="new document" className="poll-icon" />
+              </Link>
+            </Menu.Item>,
+
+            <Menu.Item key="/profile" className="profile-menu">
                 <ProfileDropdownMenu 
                   currentUser={this.props.currentUser} 
                   handleMenuClick={this.handleMenuClick}/>
@@ -75,7 +79,7 @@ function ProfileDropdownMenu(props) {
     <Menu onClick={props.handleMenuClick} className="profile-dropdown-menu">
       <Menu.Item key="user-info" className="dropdown-item" disabled>
         <div className="user-full-name-info">
-          {props.currentUser.name}
+          {props.currentUser.fullname}
         </div>
         <div className="username-info">
           @{props.currentUser.username}
@@ -85,8 +89,11 @@ function ProfileDropdownMenu(props) {
       <Menu.Item key="profile" className="dropdown-item">
         <Link to={`/users/${props.currentUser.username}`}>Profile</Link>
       </Menu.Item>
+      <Menu.Item key="documents" className="dropdown-item">
+        <Link to={`/users/${props.currentUser.username}`}>Documents</Link>
+      </Menu.Item>
       <Menu.Item key="logout" className="dropdown-item">
-        Logout
+        로그아웃
       </Menu.Item>
     </Menu>
   );

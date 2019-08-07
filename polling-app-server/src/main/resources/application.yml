@@ -1,0 +1,49 @@
+## Spring DATASOURCE (DataSourceAutoConfiguration & DataSourceProperties)
+spring:
+  datasource:
+    url: jdbc:mysql://211.218.202.186:3366/pbcms_new?serverTimezone=UTC&useUnicode=yes&characterEncoding=UTF-8
+    username: pbadmin
+    password: vpdlwlqlfejCms2014
+    initialization-mode: always # # Initialize the datasource with available DDL and DML scripts
+
+## Hibernate Properties
+# The SQL dialect makes Hibernate generate better SQL for the chosen database
+  jpa:
+    properties.hibernate.dialect: org.hibernate.dialect.MySQL5InnoDBDialect
+    hibernate.ddl-auto: update
+
+## MULTIPART (MultipartProperties)
+# Enable multipart uploads
+  servlet.multipart:
+    enabled: true
+    file-size-threshold: 2KB # Threshold after which files are written to disk.
+    max-file-size: 500MB
+    max-request-size: 215MB
+
+## Jackson Properties
+  jackson:
+    serialization.WRITE_DATES_AS_TIMESTAMPS: false
+    time-zone: UTC
+
+## Hibernate Logging
+logging.level.org.hibernate.SQL: DEBUG
+
+## Server Properties
+server:
+  port: 8080
+  compression.enabled: true
+
+## doc service Properties
+docservice:
+  jwtSecret: JWTSuperSecretKey
+  jwtExpirationInMs: 604800000
+
+## Spring Profiles
+# spring.profiles.active: prod
+
+## File Storage Properties
+# All files uploaded through the REST API will be stored in this directory
+file.upload-dir: /Users/User/.pagebuilder/uploads
+
+pb:
+  max_doc_size: 10000000
