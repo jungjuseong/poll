@@ -17,10 +17,9 @@ public class ModelMapper {
         response.setContents(doc.getContents());
         response.setPreference(doc.getPreference());
 
-        UserSummary creatorSummary = new UserSummary(creator.getId(), creator.getUsername(), creator.getFullname(), creator.getEmail());
-        response.setCreatedBy(creatorSummary);
+         //UserSummary creatorSummary = new UserSummary(creator.getId(), creator.getUsername(), creator.getFullname(), creator.getEmail());
+        // response.setCreatedBy(creatorSummary);
 
         return response;
     }
-
 }
