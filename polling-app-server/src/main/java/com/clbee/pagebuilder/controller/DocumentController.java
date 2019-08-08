@@ -54,8 +54,10 @@ public class DocumentController {
 
         logger.info("Document Created Successfully");
 
+        ApiResponse response = new ApiResponse(true,"문서 생성 성공", document.getId());
+
         return ResponseEntity.created(location)
-                .body(new ApiResponse(true, "Document Created Successfully"));
+                .body(response);
     }
 
     @PutMapping("/documents//{id}")
@@ -67,10 +69,11 @@ public class DocumentController {
                 .fromCurrentRequest().path("/{id}")
                 .buildAndExpand(id).toUri();
 
+        Long docId = (result.isPresent()) ? result.get().getId() : -1;
         logger.info("Document updated Successfully");
+        ApiResponse response = new ApiResponse(true, "Document updated Successfully", docId);
 
-        return ResponseEntity.ok()
-                .body(new ApiResponse(true, "Document updated Successfully"));
+        return ResponseEntity.ok().body(response);
     }
 
     @DeleteMapping("/documents//{id}")
@@ -81,7 +84,7 @@ public class DocumentController {
         logger.info("Document Deleted Successfully");
 
         return ResponseEntity.ok()
-                .body(new ApiResponse(true, "Document Deleted Successfully"));
+                .body(new ApiResponse(true, "Document Deleted Successfully",-1L));
     }
 
     @GetMapping("/documents//checkDocumentNameAvailability")
