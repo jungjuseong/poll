@@ -8,7 +8,7 @@ import java.time.Instant;
 public class DocumentResponse {
     private Long id;
     private String name;
-    private UserSummary createdBy;
+    // private UserSummary createdBy;
     private Instant creationDateTime;
     private String deadmark;
     private String preference;

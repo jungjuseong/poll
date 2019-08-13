@@ -41,8 +41,10 @@ class NewDocument extends Component {
             deadmark: this.state.deadmark.text
         };
 
-        createDocument(document)
+        createDocument(document) 
         .then(response => {
+            console.log(response);
+
             this.props.history.push("/");
         }).catch(error => {
             if(error.status === 401) {

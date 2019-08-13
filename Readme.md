@@ -1,3 +1,15 @@
+
+ ## 페이지빌더 서버 사이드 개발 목록
+ 
+ - 사용자 등록 / 로그인 (사용자 삭제/수정 기능 필요)
+ - 문서 저장 / 조회(모든 문서 조회, 사용자별 조회)
+ 
+ ## 테스트 준비할 작업
+ 
+ - 문서 수정 /삭제
+ 
+ 
+
 ## Building a Full Stack Polls app similar to twitter polls with Spring Boot, Spring Security, JWT, React and Ant Design
 
 ![App Screenshot](screenshot.png)
