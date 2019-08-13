@@ -16,6 +16,7 @@ import com.clbee.pagebuilder.service.DocumentService;
 
 import com.clbee.pagebuilder.util.AppConstants;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class UserController {

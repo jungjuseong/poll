@@ -9,8 +9,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.clbee.pagebuilder.model.Document;
 import com.clbee.pagebuilder.payload.*;
-import com.clbee.pagebuilder.security.CurrentUser;
-import com.clbee.pagebuilder.security.UserPrincipal;
+
 import com.clbee.pagebuilder.service.DocumentService;
 import com.clbee.pagebuilder.util.AppConstants;
 import org.slf4j.Logger;
@@ -20,6 +19,7 @@ import java.util.Optional;
 import javax.validation.Valid;
 import java.net.URI;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/api")
 public class DocumentController {
@@ -55,7 +55,7 @@ public class DocumentController {
         logger.info("Document Created Successfully");
 
         return ResponseEntity.created(location)
-                .body(new ApiResponse(true, "Document Created Successfully"));
+                .body(new ApiResponse(true, "Document Created Successfully",document.getId()));
     }
 
     @PutMapping("/documents//{id}")
@@ -70,7 +70,7 @@ public class DocumentController {
         logger.info("Document updated Successfully");
 
         return ResponseEntity.ok()
-                .body(new ApiResponse(true, "Document updated Successfully"));
+                .body(new ApiResponse(true, "Document updated Successfully", id));
     }
 
     @DeleteMapping("/documents//{id}")
@@ -81,7 +81,7 @@ public class DocumentController {
         logger.info("Document Deleted Successfully");
 
         return ResponseEntity.ok()
-                .body(new ApiResponse(true, "Document Deleted Successfully"));
+                .body(new ApiResponse(true, "Document Deleted Successfully", -1L));
     }
 
     @GetMapping("/documents//checkDocumentNameAvailability")

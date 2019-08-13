@@ -1,8 +1,9 @@
 ## Spring DATASOURCE (DataSourceAutoConfiguration & DataSourceProperties)
 spring:
   datasource:
-    url: jdbc:mysql://211.218.202.186:3366/pbcms_new?serverTimezone=UTC&useUnicode=yes&characterEncoding=UTF-8
-    username: pbadmin
+## url: jdbc:mysql://211.218.202.186:3366/pbcms_new?serverTimezone=UTC&useUnicode=yes&characterEncoding=UTF-8
+    url: jdbc:mysql://ec2-15-164-213-54.ap-northeast-2.compute.amazonaws.com:3306/pageserver?serverTimezone=UTC&useUnicode=yes&characterEncoding=UTF-8
+    username: root
     password: vpdlwlqlfejCms2014
     initialization-mode: always # # Initialize the datasource with available DDL and DML scripts
 
@@ -43,7 +44,7 @@ docservice:
 
 ## File Storage Properties
 # All files uploaded through the REST API will be stored in this directory
-file.upload-dir: /Users/User/.pagebuilder/uploads
+file.upload-dir: ./.pagebuilder/uploads
 
 pb:
   max_doc_size: 10000000
