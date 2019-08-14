@@ -11,7 +11,14 @@ const { TextArea } = Input
 
 class Document extends Component {
 
-    render() {        
+    render() {     
+
+        console.log('this.props.document:');
+        console.log(this.props.document);
+
+        if (this.props.document.createdBy == null) {
+            return null;
+        }
         let bgColor = getAvatarColor(this.props.document.createdBy.fullname);
         bgColor = (this.props.document.deadmark === 'y') ? bgColor ^ 0xff00ff : bgColor;
 

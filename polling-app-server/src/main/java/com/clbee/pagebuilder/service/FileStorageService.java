@@ -3,6 +3,9 @@ package com.clbee.pagebuilder.service;
 import com.clbee.pagebuilder.exception.FileStorageException;
 import com.clbee.pagebuilder.exception.MyFileNotFoundException;
 import com.clbee.pagebuilder.FileStorageProperties;
+import com.clbee.pagebuilder.security.JwtAuthenticationFilter;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
@@ -16,8 +19,14 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 
+import  com.clbee.pagebuilder.util.UUIDGenerator;
+
+import static com.clbee.pagebuilder.util.UUIDGenerator.NAMESPACE_URL;
+
 @Service
 public class FileStorageService {
+
+    private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
 
     private final Path storageLocation;
 
@@ -40,14 +49,18 @@ public class FileStorageService {
         try {
             // Check if the file's name contains invalid characters
             if(fileName.contains("..")) {
-                throw new FileStorageException("Sorry! Filename contains invalid path sequence " + fileName);
+                throw new FileStorageException("파일 이름에 잘못된 경로 시퀀스가 들어 있습니다. " + fileName);
             }
 
-            // Copy file to the target location (Replacing existing file with the same name)
-            Path targetLocation = this.storageLocation.resolve(fileName);
+            final String uniquePrefix = UUIDGenerator.generateType5UUID(NAMESPACE_URL, fileName).toString();
+            logger.info("uniquePrefix: " + uniquePrefix);
+
+            final String uniqueFileName = uniquePrefix + "-" + fileName;
+            // Copy file to the target location
+            Path targetLocation = this.storageLocation.resolve(uniqueFileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-            return fileName;
+            return uniqueFileName;
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
         }

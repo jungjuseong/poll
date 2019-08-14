@@ -5,6 +5,8 @@ import { DOCUMENT_NAME_MAX_LENGTH, DOCUMENT_CONTENTS_MAX_LENGTH, DOCUMENT_PREFER
 import { Form, Input, Button, notification, Checkbox } from 'antd';
 import './NewDocument.css';  
 
+import { FileUploader } from '../file/FileUploader';
+
 const FormItem = Form.Item;
 const { TextArea } = Input
 
@@ -202,6 +204,9 @@ class NewDocument extends Component {
                         <FormItem>
                             <Checkbox name = "deadmark" onChange = {this.handleDeadmarkChange} />
                              &nbsp; dead mark
+                        </FormItem> 
+                        <FormItem>
+                            <FileUploader /> File upload
                         </FormItem> 
 
                         <FormItem className="poll-form-row">

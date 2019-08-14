@@ -44,7 +44,7 @@ docservice:
 
 ## File Storage Properties
 # All files uploaded through the REST API will be stored in this directory
-file.upload-dir: ./.pagebuilder/uploads
+file.upload-dir: /home/ubuntu/www/uploads
 
 pb:
   max_doc_size: 10000000

@@ -26,17 +26,10 @@ class DocumentList extends Component {
     }
 
     loadDocumentList = (page = 0, size = DOCUMENT_LIST_SIZE) => {
-        let promise;
-    
         console.log(this.props);
 
-        if (this.props.username) {
-            promise = getUserCreatedDocuments(this.props.username, page, size);
-            
-        } else {
-           promise = getAllDocuments(page, size);
-        }
-
+        let promise = (this.props.username) ? getUserCreatedDocuments(this.props.username, page, size) : getAllDocuments(page, size);
+    
         if(!promise) {
             return;
         }
