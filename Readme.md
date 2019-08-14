@@ -9,6 +9,45 @@
  - 문서 수정 /삭제
  
  
+## 아마존 설치 정보
+
+
+ec2-15-164-213-54.ap-northeast-2.compute.amazonaws.com
+user-name : ubuntu
+
+### java8 설치
+
+```linux
+sudo apt-get update
+sudo apt-get install openjdk-8-jdk
+```
+
+### mysql 설치
+
+mysql 설치
+
+1. root 계정으로 변경 변경
+     $ sudo su
+2. apt-get 패키지 업데이트
+     $ apt-get update
+3. MySQL 패키지 존재 유무 확인
+     $ apt-cache search mysql-server
+4. MySQL 5.7 설치
+     $ apt-get install mysql-server-5.7
+5. 외부접속 허용 설정
+     $ vi /etc/mysql/mysql.conf.d/mysqld.cnf
+     bind-address = 127.0.0.1을 0.0.0.0으로 변경
+6. MySQL 서비스 재시작
+     $ service mysql restart
+7. MySQL 접속
+     $ mysql -u root -p
+     초기 password는 없으므로 'enter' key 입력
+8. root계정의 비밀번호 생성 및 저장
+     mysql > ALTER USER 'root'@'localhost' IDENTIFIED BY 'vpdlwlqlfejCms2014';
+     mysql > commit;
+10. 모든 ip에서 root 계정으로 접속 가능하게 설정
+     mysql > GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'vpdlwlqlfejCms2014';
+     mysql > FLUSH PRIVILEGES;
 
 ## Building a Full Stack Polls app similar to twitter polls with Spring Boot, Spring Security, JWT, React and Ant Design
 
