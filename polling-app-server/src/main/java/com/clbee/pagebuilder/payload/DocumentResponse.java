@@ -10,6 +10,7 @@ public class DocumentResponse {
     private String name;
     // private UserSummary createdBy;
     private Instant creationDateTime;
+    private Instant updatedDateTime;
     private String deadmark;
     private String preference;
     private String contents;
