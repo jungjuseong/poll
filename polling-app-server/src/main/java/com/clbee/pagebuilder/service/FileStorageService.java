@@ -56,11 +56,12 @@ public class FileStorageService {
             logger.info("uniquePrefix: " + uniquePrefix);
 
             final String uniqueFileName = uniquePrefix + "-" + fileName;
+
             // Copy file to the target location
             Path targetLocation = this.storageLocation.resolve(uniqueFileName);
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-            return uniqueFileName;
+            return fileName;
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
         }

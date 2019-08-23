@@ -38,8 +38,7 @@ public class FileController {
                 .path(fileName)
                 .toUriString();
 
-        return new UploadFileResponse(fileName, downloadUri,
-                file.getContentType(), file.getSize());
+        return new UploadFileResponse(fileName, downloadUri, file.getContentType(), file.getSize());
     }
 
     @PostMapping("/multi-upload")

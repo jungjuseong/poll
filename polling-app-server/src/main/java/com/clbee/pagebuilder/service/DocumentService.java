@@ -9,6 +9,7 @@ import com.clbee.pagebuilder.payload.DocumentResponse;
 import com.clbee.pagebuilder.repository.DocumentRepository;
 import com.clbee.pagebuilder.repository.UserRepository;
 import com.clbee.pagebuilder.util.AppConstants;
+import com.clbee.pagebuilder.util.DocumentEncoder;
 import com.clbee.pagebuilder.util.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -105,12 +106,16 @@ public class DocumentService {
         Optional<Document> optionalDocument = documentRepository.findById(id);
 
         if (optionalDocument.isPresent()) {
-            optionalDocument.get().setName(request.getName());
-            optionalDocument.get().setDeadmark(request.getDeadmark());
-            optionalDocument.get().setContents(request.getContents());
-            optionalDocument.get().setPreference(request.getPreference());
+            Document doc = optionalDocument.get();
 
-            documentRepository.save(optionalDocument.get());
+            String content = DocumentEncoder.encode(request.getContents());
+
+            doc.setName(request.getName());
+            doc.setDeadmark(request.getDeadmark());
+            doc.setContents(content);
+            doc.setPreference(request.getPreference());
+
+            documentRepository.save(doc);
         }
 
         return optionalDocument;

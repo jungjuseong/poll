@@ -26,14 +26,12 @@ class DocumentList extends Component {
     }
 
     loadDocumentList = (page = 0, size = DOCUMENT_LIST_SIZE) => {
-        console.log(this.props);
 
         let promise = (this.props.username) ? getUserCreatedDocuments(this.props.username, page, size) : getAllDocuments(page, size);
     
         if(!promise) {
             return;
         }
-
         this.setState({
             isLoading: true
         });
@@ -87,10 +85,11 @@ class DocumentList extends Component {
         const views = [];
         this.state.documents.forEach((document, index) => {
             views.push(
-                <Document key={document.id} document={document}/>
-                            
-            )
+                <Document key={document.id} document={document}/>                            
+            );
         });
+
+        
 
         return (
             <div className="documents-container">
