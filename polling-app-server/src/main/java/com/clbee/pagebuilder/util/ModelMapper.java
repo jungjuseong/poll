@@ -13,6 +13,7 @@ public class ModelMapper {
         response.setId(doc.getId());
         response.setName(doc.getName());
         response.setCreationDateTime(doc.getCreatedAt());
+        response.setUpdatedDateTime(doc.getUpdatedAt());
         response.setDeadmark(doc.getDeadmark());
         response.setContents(doc.getContents());
         response.setPreference(doc.getPreference());

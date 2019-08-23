@@ -15,7 +15,8 @@ public interface DocumentRepository extends JpaRepository<Document, Long> {
 
     Optional<Document> findById(Long documentId);
 
-    Page<Document> findByCreatedBy(Long userId, Pageable pageable);
+    Page<Document> findByCreatedByOrderByUpdatedAtDesc(Long userId, Pageable pageable);
+    Page<Document> findByCreatedByOrderByNameDesc(Long userId, Pageable pageable);
 
     Long countByCreatedBy(Long userId);
 

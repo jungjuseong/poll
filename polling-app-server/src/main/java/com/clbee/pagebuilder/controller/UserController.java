@@ -66,4 +66,11 @@ public class UserController {
                  @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
         return documentService.getDocumentsCreatedBy(username, page, size);
     }
+
+    @GetMapping("/users/{username}/documents/name")
+    public PagedResponse<DocumentResponse> getDocumentsCreatedByOrderByName(@PathVariable(value = "username") String username,
+                                                                 @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+                                                                 @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
+        return documentService.getDocumentsCreatedByOrderByDocumentName(username, page, size);
+    }
 }
