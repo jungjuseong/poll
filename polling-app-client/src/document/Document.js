@@ -12,6 +12,19 @@ import './Document.css';
 
 const { TextArea } = Input
 
+window.done = false;
+window.onunload = () => {
+    // writableStream.abort()
+    // // also possible to call abort on the writer you got from `getWriter()`
+    // writer.abort()
+}
+
+window.onbeforeunload = evt => {
+    if (!window.done) {
+        evt.returnValue = `Are you sure you want to leave?`;
+    }
+}
+
 class Document extends Component {
 
     makeZip(event) {
@@ -48,17 +61,22 @@ class Document extends Component {
             // ctrl.close()
           },
           async pull (ctrl) {
-            const url = 'https://d8d913s460fub.cloudfront.net/videoserver/cat-test-video-320x240.mp4'
+            const url2 = 'https://d8d913s460fub.cloudfront.net/videoserver/cat-test-video-320x240.mp4'
+            const url = 'http://ec2-15-164-213-54.ap-northeast-2.compute.amazonaws.com/images/7e625eca-b53f-5eec-9b83-7f3b3f9960fb-donga-jjs.jpg'
             const res = await fetch(url)
             const stream = () => res.body
-            const name = '/streamsaver-zip-example/cat.mp4'
+            const name = '/streamsaver-zip-example/dongajjs.jpg'
             ctrl.enqueue({ name, stream })
+
             ctrl.close()
-          }
+          },
         });
         // more optimized
         if (window.WritableStream && readableZipStream.pipeTo) {
-          return readableZipStream.pipeTo(fileStream).then(() => console.log('done writing'))
+          return readableZipStream.pipeTo(fileStream).then(() => {
+            window.done = true;  
+            console.log('done writing')
+          })
         }
 		// less optimized
         window.writer = fileStream.getWriter()

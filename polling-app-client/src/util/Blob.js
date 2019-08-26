@@ -95,7 +95,7 @@
     function stringEncode (string) {
       var pos = 0
       var len = string.length
-      var out = []
+      // var out = []
       var Arr = global.Uint8Array || Array // Use byte array when possible
   
       var at = 0  // output position
@@ -180,7 +180,7 @@
             case 2:
               secondByte = buf[i + 1]
               if ((secondByte & 0xC0) === 0x80) {
-                tempCodePoint = (firstByte & 0x1F) << 0x6 | (secondByte & 0x3F)
+                tempCodePoint = ((firstByte & 0x1F) << 0x6) | (secondByte & 0x3F)
                 if (tempCodePoint > 0x7F) {
                   codePoint = tempCodePoint
                 }
@@ -189,9 +189,9 @@
             case 3:
               secondByte = buf[i + 1]
               thirdByte = buf[i + 2]
-              if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80) {
-                tempCodePoint = (firstByte & 0xF) << 0xC | (secondByte & 0x3F) << 0x6 | (thirdByte & 0x3F)
-                if (tempCodePoint > 0x7FF && (tempCodePoint < 0xD800 || tempCodePoint > 0xDFFF)) {
+              if (((secondByte & 0xC0) === 0x80) && ((thirdByte & 0xC0) === 0x80)) {
+                tempCodePoint = ((firstByte & 0xF) << 0xC) | ((secondByte & 0x3F) << 0x6) | (thirdByte & 0x3F)
+                if ((tempCodePoint > 0x7FF) && ((tempCodePoint < 0xD800) || (tempCodePoint > 0xDFFF))) {
                   codePoint = tempCodePoint
                 }
               }
@@ -200,12 +200,15 @@
               secondByte = buf[i + 1]
               thirdByte = buf[i + 2]
               fourthByte = buf[i + 3]
-              if ((secondByte & 0xC0) === 0x80 && (thirdByte & 0xC0) === 0x80 && (fourthByte & 0xC0) === 0x80) {
-                tempCodePoint = (firstByte & 0xF) << 0x12 | (secondByte & 0x3F) << 0xC | (thirdByte & 0x3F) << 0x6 | (fourthByte & 0x3F)
-                if (tempCodePoint > 0xFFFF && tempCodePoint < 0x110000) {
+              if (((secondByte & 0xC0) === 0x80) && ((thirdByte & 0xC0) === 0x80) && ((fourthByte & 0xC0) === 0x80)) {
+                tempCodePoint = ((firstByte & 0xF) << 0x12) | ((secondByte & 0x3F) << 0xC) | ((thirdByte & 0x3F) << 0x6) | (fourthByte & 0x3F)
+                if ((tempCodePoint > 0xFFFF) && (tempCodePoint < 0x110000)) {
                   codePoint = tempCodePoint
                 }
               }
+              break;
+            default:
+                break
           }
         }
   
@@ -217,16 +220,16 @@
         } else if (codePoint > 0xFFFF) {
           // encode to utf16 (surrogate pair dance)
           codePoint -= 0x10000
-          res.push(codePoint >>> 10 & 0x3FF | 0xD800)
-          codePoint = 0xDC00 | codePoint & 0x3FF
+          res.push((codePoint >>> 10) & (0x3FF | 0xD800))
+          codePoint = 0xDC00 | (codePoint & 0x3FF)
         }
   
         res.push(codePoint)
         i += bytesPerSequence
       }
   
-      var len = res.length;
-      var str = '';
+      let len = res.length;
+      let str = '';
       i = 0
   
       while (i < len) {
@@ -528,21 +531,22 @@
         new File([], '')
       } catch (e) {
         try {
-          var klass = new Function('class File extends Blob {' +
-            'constructor(chunks, name, opts) {' +
-              'opts = opts || {};' +
-              'super(chunks, opts || {});' +
-              'this.name = name.replace(/\//g, ":");' +
-              'this.lastModifiedDate = opts.lastModified ? new Date(opts.lastModified) : new Date();' +
-              'this.lastModified = +this.lastModifiedDate;' +
-            '}};' +
-            'return new File([], ""), File'
+          let klass = new Function(
+            `class File extends Blob {
+             constructor(chunks, name, opts) {
+              opts = opts || {};
+              super(chunks, opts || {});
+              this.name = name.replace(/\//g, ":");
+              this.lastModifiedDate = opts.lastModified ? new Date(opts.lastModified) : new Date();
+              this.lastModified = +this.lastModifiedDate;
+            }};
+            return new File([], ""), File`
           )()
           global.File = klass
         } catch (e) {
-          var klass = function (b, d, c) {
-            var blob = new Blob(b, c)
-            var t = c && void 0 !== c.lastModified ? new Date(c.lastModified) : new Date()
+          let klass = function (b, d, c) {
+            let blob = new Blob(b, c)
+            let t = c && void 0 !== c.lastModified ? new Date(c.lastModified) : new Date()
   
             blob.name = d.replace(/\//g, ':')
             blob.lastModifiedDate = t
@@ -628,19 +632,19 @@
       try {
         new ReadableStream({})
         stream = function stream(blob){
-          var position = 0
-          var blob = this
+          let position = 0
+          blob = this
   
           return new ReadableStream({
             pull: function (controller) {
-              var chunk = blob.slice(position, position + 524288)
+              const chunk = blob.slice(position, position + 524288);
   
               return chunk.arrayBuffer().then(function (buffer) {
                 position += buffer.byteLength
-                var uint8array = new Uint8Array(buffer)
+                const uint8array = new Uint8Array(buffer)
                 controller.enqueue(uint8array)
   
-                if (position == blob.size)
+                if (position === blob.size)
                   controller.close()
               })
             }
