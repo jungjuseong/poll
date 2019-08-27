@@ -15,18 +15,7 @@ public class UUIDGenerator {
     public static final String NAMESPACE_URL = "6ba7b811-9dad-11d1-80b4-00c04fd430c8";
 
     private static final char[] hexArray = "0123456789ABCDEF".toCharArray();
-/*
-    public static void main(String[] args) {
-        try {
-            System.out.println("Type 3 : " + generateType3UUID(NAMESPACE_DNS, "google.com"));
-            System.out.println("Type 4 : " + generateType4UUID());
-            System.out.println("Type 5 : " + generateType5UUID(NAMESPACE_URL, "google.com"));
-            System.out.println("Unique key  : " + generateUniqueKeysWithUUIDAndMessageDigest());
-        } catch (NoSuchAlgorithmException | UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
-    }
-*/
+
     /**
      * Type 4 UUID Generation
      */

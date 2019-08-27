@@ -38,7 +38,7 @@ export function getUserCreatedDocumentsSortBy(username, page, size, sortkey, dir
     size = size || POLL_LIST_SIZE;
 
     // sortkey: 'name', 'updatedAt'
-    // direction: 'ASC', 'DESC'
+    // direction: 'asc', 'desc'
     return request({
         url: `${API_BASE_URL}/users/${username}/documents?page=${page}&size=${size}&sortKey=${sortkey}&direction=${direction}`,
         method: 'GET'

@@ -51,17 +51,19 @@ public class FileStorageService {
             if(fileName.contains("..")) {
                 throw new FileStorageException("파일 이름에 잘못된 경로 시퀀스가 들어 있습니다. " + fileName);
             }
-
             final String uniquePrefix = UUIDGenerator.generateType5UUID(NAMESPACE_URL, fileName).toString();
-            logger.info("uniquePrefix: " + uniquePrefix);
 
             final String uniqueFileName = uniquePrefix + "-" + fileName;
+            logger.info("uniqueFileName: " + uniqueFileName);
 
             // Copy file to the target location
             Path targetLocation = this.storageLocation.resolve(uniqueFileName);
+
+            logger.info("targetLocation: " + targetLocation.toString());
+
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
-            return fileName;
+            return uniqueFileName;
         } catch (IOException ex) {
             throw new FileStorageException("Could not store file " + fileName + ". Please try again!", ex);
         }

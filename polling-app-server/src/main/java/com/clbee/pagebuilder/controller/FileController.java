@@ -12,6 +12,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
+import org.springframework.web.util.UriBuilder;
+
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,14 +33,17 @@ public class FileController {
 
     @PostMapping("/upload")
     public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
-        String fileName = fileStorageService.storeFile(file);
+        String savedFileName = fileStorageService.storeFile(file);
 
         String downloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/images/")
-                .path(fileName)
+                .path(savedFileName)
+                .port(-1)
                 .toUriString();
 
-        return new UploadFileResponse(fileName, downloadUri, file.getContentType(), file.getSize());
+        logger.info("downloadUri:" + downloadUri);
+
+        return new UploadFileResponse(savedFileName, downloadUri, file.getContentType(), file.getSize());
     }
 
     @PostMapping("/multi-upload")

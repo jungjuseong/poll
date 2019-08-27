@@ -62,7 +62,7 @@ class Document extends Component {
           },
           async pull (ctrl) {
             const url2 = 'https://d8d913s460fub.cloudfront.net/videoserver/cat-test-video-320x240.mp4'
-            const url = 'http://ec2-15-164-213-54.ap-northeast-2.compute.amazonaws.com/images/7e625eca-b53f-5eec-9b83-7f3b3f9960fb-donga-jjs.jpg'
+            const url = 'ec2-15-164-218-77.ap-northeast-2.compute.amazonaws.com/images/7e625eca-b53f-5eec-9b83-7f3b3f9960fb-donga-jjs.jpg'
             const res = await fetch(url)
             const stream = () => res.body
             const name = '/streamsaver-zip-example/dongajjs.jpg'
