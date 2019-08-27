@@ -8,8 +8,8 @@ public interface AppConstants {
 
     int MAX_PAGE_SIZE = 50;
 
-    String[] SORTKEYS = {"name", "updated", "created"};
+    String[] SORTKEYS = {"name", "updatedAt", "createdAt"};
     String[] SORT_DIRECTIONS = {"desc", "asc"};
-    String DEFAULT_SORTKEY = "updated";
+    String DEFAULT_SORTKEY = "updatedAt";
     String DEFAULT_DIRECTION = "desc";
 }
