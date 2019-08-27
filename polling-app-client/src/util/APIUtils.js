@@ -33,6 +33,18 @@ export function getUserCreatedDocuments(username, page, size) {
     });
 }
 
+export function getUserCreatedDocumentsSortBy(username, page, size, sortkey, direction) {
+    page = page || 0;
+    size = size || POLL_LIST_SIZE;
+
+    // sortkey: 'name', 'updated'
+    // direction: 'ASC', 'DESC'
+    return request({
+        url: `${API_BASE_URL}/users/${username}/documents?page=${page}&size=${size}&sortKey=${sortkey}&direction=${direction}`,
+        method: 'GET'
+    });
+}
+
 export function getAllDocuments(page, size) {
     page = page || 0;
     size = size || POLL_LIST_SIZE;

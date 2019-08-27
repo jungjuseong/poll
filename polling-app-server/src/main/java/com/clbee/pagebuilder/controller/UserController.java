@@ -3,6 +3,7 @@ package com.clbee.pagebuilder.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -60,17 +61,19 @@ public class UserController {
         return userProfile;
     }
 
+//    @GetMapping("/users/{username}/documents")
+//    public PagedResponse<DocumentResponse> getDocumentsCreatedBy(@PathVariable(value = "username") String username,
+//                 @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+//                 @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
+//        return documentService.getDocumentsCreatedBy(username, page, size);
+//    }
+
     @GetMapping("/users/{username}/documents")
     public PagedResponse<DocumentResponse> getDocumentsCreatedBy(@PathVariable(value = "username") String username,
-                 @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
-                 @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
-        return documentService.getDocumentsCreatedBy(username, page, size);
-    }
-
-    @GetMapping("/users/{username}/documents/name")
-    public PagedResponse<DocumentResponse> getDocumentsCreatedByOrderByName(@PathVariable(value = "username") String username,
-                                                                 @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
-                                                                 @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
-        return documentService.getDocumentsCreatedByOrderByDocumentName(username, page, size);
+                @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+                @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size,
+                @RequestParam(value = "sortkey", defaultValue = AppConstants.DEFAULT_SORTKEY) String sortkey,
+                @RequestParam(value = "direction", defaultValue = AppConstants.DEFAULT_DIRECTION) String direction                                                          ) {
+        return documentService.getDocumentsCreatedBy(username, page, size, sortkey, direction);
     }
 }

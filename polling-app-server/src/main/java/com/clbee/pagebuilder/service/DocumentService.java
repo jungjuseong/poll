@@ -74,15 +74,7 @@ public class DocumentService {
         return user;
     }
 
-    public PagedResponse<DocumentResponse> getDocumentsCreatedBy(String username, int page, int size) {
-        validatePageNumberAndSize(page, size);
-
-        User user = getUser(username);
-
-        // Retrieve all documents created by the given username
-        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
-        Page<Document> documents = documentRepository.findByCreatedByOrderByUpdatedAtDesc(user.getId(), pageable);
-
+    private PagedResponse<DocumentResponse>makePageResponse(User user,Page<Document> documents) {
         if (documents.getNumberOfElements() == 0) {
             return new PagedResponse<>(Collections.emptyList(), documents.getNumber(),
                     documents.getSize(), documents.getTotalElements(), documents.getTotalPages(), documents.isLast());
@@ -96,28 +88,30 @@ public class DocumentService {
                 documents.getSize(), documents.getTotalElements(), documents.getTotalPages(), documents.isLast());
     }
 
-    public PagedResponse<DocumentResponse> getDocumentsCreatedByOrderByDocumentName(String username, int page, int size) {
-        validatePageNumberAndSize(page, size);
+//    private PagedResponse<DocumentResponse> getDocumentsCreatedBy0(String username, int page, int size) {
+//        validatePageNumberAndSize(page, size);
+//        User user = getUser(username);
+//
+//        // Retrieve all documents created by the given username
+//        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
+//        Page<Document> documents = documentRepository.findByCreatedBy(user.getId(), pageable);
+//
+//        return makePageResponse(user, documents);
+//    }
 
-        User user = userRepository.findByUsername(username)
-                .orElseThrow(() -> new ResourceNotFoundException("User", "username", username));
+    public PagedResponse<DocumentResponse> getDocumentsCreatedBy(String username, int page, int size, String sortkey, String direction) {
+        validatePageNumberAndSize(page, size);
+        User user = getUser(username);
 
         // Retrieve all documents created by the given username
-        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
+        Pageable pageable = PageRequest.of(page, size,
+                direction.equals(("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC,
+                sortkey);
+
         //Page<Document> documents = documentRepository.findByCreatedBy(user.getId(), pageable, Sort.by(Sort.Direction.ASC, "name"));
-        Page<Document> documents = documentRepository.findByCreatedByOrderByNameDesc(user.getId(), pageable);
+        Page<Document> documents = documentRepository.findByCreatedBy(user.getId(), pageable);
 
-        if (documents.getNumberOfElements() == 0) {
-            return new PagedResponse<>(Collections.emptyList(), documents.getNumber(),
-                    documents.getSize(), documents.getTotalElements(), documents.getTotalPages(), documents.isLast());
-        }
-
-        List<DocumentResponse> documentResponses = documents.map(document -> {
-            return ModelMapper.mapDocumentToDocumentResponse(document, user);
-        }).getContent();
-
-        return new PagedResponse<>(documentResponses, documents.getNumber(),
-                documents.getSize(), documents.getTotalElements(), documents.getTotalPages(), documents.isLast());
+        return makePageResponse(user, documents);
     }
 
     public Document createDocument(DocumentRequest request) {
@@ -136,16 +130,14 @@ public class DocumentService {
         Optional<Document> optionalDocument = documentRepository.findById(id);
 
         if (optionalDocument.isPresent()) {
-            Document doc = optionalDocument.get();
+            Document document = optionalDocument.get();
 
-            String content = DocumentEncoder.encode(request.getContents());
+            document.setName(request.getName());
+            document.setDeadmark(request.getDeadmark());
+            document.setContents(request.getContents());
+            document.setPreference(request.getPreference());
 
-            doc.setName(request.getName());
-            doc.setDeadmark(request.getDeadmark());
-            doc.setContents(content);
-            doc.setPreference(request.getPreference());
-
-            documentRepository.save(doc);
+            documentRepository.save(document);
         }
 
         return optionalDocument;

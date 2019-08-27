@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { getAllDocuments, getUserCreatedDocuments } from '../util/APIUtils';
+import { getAllDocuments, getUserCreatedDocuments, getUserCreatedDocumentsSortBy } from '../util/APIUtils';
 import Document from './Document';
 import LoadingIndicator  from '../common/LoadingIndicator';
 import { Button, Icon } from 'antd';
