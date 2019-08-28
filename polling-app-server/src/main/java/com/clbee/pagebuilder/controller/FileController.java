@@ -32,7 +32,14 @@ public class FileController {
     }
 
     @PostMapping("/upload")
-    public UploadFileResponse uploadFile(@RequestParam("file") MultipartFile file) {
+    public UploadFileResponse uploadFile(
+            @RequestParam("file") MultipartFile file,
+            @RequestParam("uploaded-by") String uploadedBy,
+            @RequestParam("document-name") String documentName) {
+
+        logger.info("upload file - uploadedBy:" + uploadedBy);
+        logger.info("upload file - documentName:" + documentName);
+
         String savedFileName = fileStorageService.storeFile(file);
 
         String downloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
@@ -47,10 +54,13 @@ public class FileController {
     }
 
     @PostMapping("/multi-upload")
-    public List<UploadFileResponse> uploadMultipleFiles(@RequestParam("files") MultipartFile[] files) {
+    public List<UploadFileResponse> uploadMultipleFiles(
+            @RequestParam("files") MultipartFile[] files,
+            @RequestParam("uploaded-by") String uploadedBy,
+            @RequestParam("document-name") String documentName) {
         List<UploadFileResponse> list = new ArrayList<>();
         for (MultipartFile file : files) {
-            UploadFileResponse uploadFileResponse = uploadFile(file);
+            UploadFileResponse uploadFileResponse = uploadFile(file, uploadedBy, documentName);
             list.add(uploadFileResponse);
         }
         return list;

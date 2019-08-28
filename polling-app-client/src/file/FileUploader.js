@@ -17,8 +17,8 @@ export class FileUploader extends Component {
         const data = new FormData();
 
         data.append('file', source);
-        data.append('name', 'my_file');
-        data.append('description', 'this file is uploaded by IRON');
+        data.append('uploaded-by', 'iron');
+        data.append('document-name', 'untitled');
 
         //calling async Promise and handling response or error situation
         this.fileService.uploadFileToServer(data).then((response) => {

@@ -21,8 +21,6 @@ import java.nio.file.StandardCopyOption;
 
 import  com.clbee.pagebuilder.util.UUIDGenerator;
 
-import static com.clbee.pagebuilder.util.UUIDGenerator.NAMESPACE_URL;
-
 @Service
 public class FileStorageService {
 
@@ -51,7 +49,7 @@ public class FileStorageService {
             if(fileName.contains("..")) {
                 throw new FileStorageException("파일 이름에 잘못된 경로 시퀀스가 들어 있습니다. " + fileName);
             }
-            final String uniquePrefix = UUIDGenerator.generateType5UUID(NAMESPACE_URL, fileName).toString();
+            final String uniquePrefix = UUIDGenerator.generateType4UUID().toString(); // generateType5UUID(NAMESPACE_URL, fileName).toString();
 
             final String uniqueFileName = uniquePrefix + "-" + fileName;
             logger.info("uniqueFileName: " + uniqueFileName);
