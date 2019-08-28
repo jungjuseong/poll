@@ -18,7 +18,7 @@ export class FileUploader extends Component {
 
         data.append('file', source);
         data.append('uploaded-by', 'iron');
-        data.append('document-name', 'untitled');
+        data.append('document-id', 100);
 
         //calling async Promise and handling response or error situation
         this.fileService.uploadFileToServer(data).then((response) => {

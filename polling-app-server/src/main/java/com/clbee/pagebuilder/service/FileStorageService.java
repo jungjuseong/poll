@@ -18,6 +18,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.Optional;
 
 import  com.clbee.pagebuilder.util.UUIDGenerator;
 
@@ -39,8 +40,13 @@ public class FileStorageService {
             throw new FileStorageException("업로드 파일을 저장할 폴터를 만들 수 없습니다.", ex);
         }
     }
+    private Optional<String> getExtension(String filename) {
+        return Optional.ofNullable(filename)
+                .filter(f -> f.contains("."))
+                .map(f -> f.substring(filename.lastIndexOf(".") + 1));
+    }
 
-    public String storeFile(MultipartFile file) {
+    public String storeFile(MultipartFile file, String username, Long documentId) {
         // Normalize file name
         String fileName = StringUtils.cleanPath(file.getOriginalFilename());
 
@@ -51,7 +57,11 @@ public class FileStorageService {
             }
             final String uniquePrefix = UUIDGenerator.generateType4UUID().toString(); // generateType5UUID(NAMESPACE_URL, fileName).toString();
 
-            final String uniqueFileName = uniquePrefix + "-" + fileName;
+            String uniqueFileName = username + "-" + documentId + "-" + uniquePrefix.substring(0,8);
+            final Optional<String> optionalExt = getExtension(fileName);
+            if (optionalExt.isPresent()) {
+                uniqueFileName += "." + optionalExt.get();
+            }
             logger.info("uniqueFileName: " + uniqueFileName);
 
             // Copy file to the target location

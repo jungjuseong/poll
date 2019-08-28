@@ -35,12 +35,12 @@ public class FileController {
     public UploadFileResponse uploadFile(
             @RequestParam("file") MultipartFile file,
             @RequestParam("uploaded-by") String uploadedBy,
-            @RequestParam("document-name") String documentName) {
+            @RequestParam("document-id") Long documentId) {
 
         logger.info("upload file - uploadedBy:" + uploadedBy);
-        logger.info("upload file - documentName:" + documentName);
+        logger.info("upload file - documentId:" + documentId);
 
-        String savedFileName = fileStorageService.storeFile(file);
+        String savedFileName = fileStorageService.storeFile(file, uploadedBy, documentId);
 
         String downloadUri = ServletUriComponentsBuilder.fromCurrentContextPath()
                 .path("/images/")
@@ -57,10 +57,10 @@ public class FileController {
     public List<UploadFileResponse> uploadMultipleFiles(
             @RequestParam("files") MultipartFile[] files,
             @RequestParam("uploaded-by") String uploadedBy,
-            @RequestParam("document-name") String documentName) {
+            @RequestParam("document-id") Long documentId) {
         List<UploadFileResponse> list = new ArrayList<>();
         for (MultipartFile file : files) {
-            UploadFileResponse uploadFileResponse = uploadFile(file, uploadedBy, documentName);
+            UploadFileResponse uploadFileResponse = uploadFile(file, uploadedBy, documentId);
             list.add(uploadFileResponse);
         }
         return list;
