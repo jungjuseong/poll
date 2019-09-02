@@ -11,9 +11,14 @@
  
 ## 아마존 설치 정보
 
+- pagebuilder@clbee.com
+- Zmfqlrnt5678  (클비굿5678)
 
-ec2-15-164-213-54.ap-northeast-2.compute.amazonaws.com
-user-name : ubuntu
+- 폐기: ec2-15-164-213-54.ap-northeast-2.compute.amazonaws.com
+
+- 2번 인스턴스: ec2-15-164-218-77.ap-northeast-2.compute.amazonaws.com
+
+- user-name : ubuntu
 
 ### java8 설치
 
@@ -48,6 +53,15 @@ mysql 설치
 10. 모든 ip에서 root 계정으로 접속 가능하게 설정
      mysql > GRANT ALL PRIVILEGES ON *.* TO 'root'@'%' IDENTIFIED BY 'vpdlwlqlfejCms2014';
      mysql > FLUSH PRIVILEGES;
+
+11. schema - pageserver
+
+## nginx 설치
+
+- /var/www/html - chown -R ubuntu:ubuntu, chmod 775 /var/www/images
+- images - CORS 설정
+- layout, editor routing
+
 
 ## Building a Full Stack Polls app similar to twitter polls with Spring Boot, Spring Security, JWT, React and Ant Design
 
