@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
-import { getAllDocuments, getUserCreatedDocuments, getUserCreatedDocumentsSortBy } from '../util/APIUtils';
+import { 
+    getAllDocuments, 
+    getUserCreatedDocuments, 
+    getDocumentsUserCreatedAndName } from '../util/APIUtils';
 import Document from './Document';
 import LoadingIndicator  from '../common/LoadingIndicator';
 import { Button, Icon } from 'antd';
@@ -27,7 +30,10 @@ class DocumentList extends Component {
 
     loadDocumentList = (page = 0, size = DOCUMENT_LIST_SIZE) => {
 
-        let promise = (this.props.username) ? getUserCreatedDocuments(this.props.username, page, size) : getAllDocuments(page, size);
+        let promise = (this.props.username) ? 
+            getUserCreatedDocuments(this.props.username, page, size) :
+            getDocumentsUserCreatedAndName('changhee', 'untitled', page, size, 'updatedAt', 'desc');
+            // getAllDocuments(page, size);
     
         if(!promise) {
             return;

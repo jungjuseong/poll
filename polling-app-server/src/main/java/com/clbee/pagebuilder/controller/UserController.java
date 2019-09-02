@@ -61,19 +61,26 @@ public class UserController {
         return userProfile;
     }
 
-//    @GetMapping("/users/{username}/documents")
-//    public PagedResponse<DocumentResponse> getDocumentsCreatedBy(@PathVariable(value = "username") String username,
-//                 @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
-//                 @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size) {
-//        return documentService.getDocumentsCreatedBy(username, page, size);
-//    }
-
     @GetMapping("/users/{username}/documents")
     public PagedResponse<DocumentResponse> getDocumentsCreatedBy(@PathVariable(value = "username") String username,
                 @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
                 @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size,
                 @RequestParam(value = "sortkey", defaultValue = AppConstants.DEFAULT_SORTKEY) String sortkey,
-                @RequestParam(value = "direction", defaultValue = AppConstants.DEFAULT_DIRECTION) String direction                                                          ) {
+                @RequestParam(value = "direction", defaultValue = AppConstants.DEFAULT_DIRECTION) String direction) {
         return documentService.getDocumentsCreatedBy(username, page, size, sortkey, direction);
+    }
+
+    @GetMapping("/users/{username}/{documentname}")
+    public PagedResponse<DocumentResponse> getDocumentsCreatedByAndDocumentName(
+                @PathVariable(value = "username") String username,
+                @PathVariable(value = "documentname") String documentname,
+                @RequestParam(value = "page", defaultValue = AppConstants.DEFAULT_PAGE_NUMBER) int page,
+                @RequestParam(value = "size", defaultValue = AppConstants.DEFAULT_PAGE_SIZE) int size,
+                @RequestParam(value = "sortkey", defaultValue = AppConstants.DEFAULT_SORTKEY) String sortkey,
+                @RequestParam(value = "direction", defaultValue = AppConstants.DEFAULT_DIRECTION) String direction) {
+
+        logger.info("getDocumentsCreatedByAndDocumentName: " + username + " : " + documentname);
+
+        return documentService.getDocumentsCreatedByAndDocumentName(username, documentname, page, size, sortkey, direction);
     }
 }

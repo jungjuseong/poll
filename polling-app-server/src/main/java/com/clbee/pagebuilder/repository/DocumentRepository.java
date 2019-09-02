@@ -14,9 +14,11 @@ import java.util.Optional;
 public interface DocumentRepository extends JpaRepository<Document, Long> {
 
     Optional<Document> findById(Long documentId);
+    Optional<Document> findByName(String documentName);
 
     Page<Document> findByCreatedBy(Long userId, Pageable pageable);
     Page<Document> findByCreatedByOrderByNameDesc(Long userId, Pageable pageable);
+    Page<Document> findByCreatedByAndName(Long userid, String name, Pageable pageable);
 
     Long countByCreatedBy(Long userId);
 

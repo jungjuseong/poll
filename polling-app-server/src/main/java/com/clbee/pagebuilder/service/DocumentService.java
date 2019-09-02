@@ -88,17 +88,6 @@ public class DocumentService {
                 documents.getSize(), documents.getTotalElements(), documents.getTotalPages(), documents.isLast());
     }
 
-//    private PagedResponse<DocumentResponse> getDocumentsCreatedBy0(String username, int page, int size) {
-//        validatePageNumberAndSize(page, size);
-//        User user = getUser(username);
-//
-//        // Retrieve all documents created by the given username
-//        Pageable pageable = PageRequest.of(page, size, Sort.Direction.DESC, "createdAt");
-//        Page<Document> documents = documentRepository.findByCreatedBy(user.getId(), pageable);
-//
-//        return makePageResponse(user, documents);
-//    }
-
     public PagedResponse<DocumentResponse> getDocumentsCreatedBy(String username, int page, int size, String sortkey, String direction) {
         validatePageNumberAndSize(page, size);
         User user = getUser(username);
@@ -108,8 +97,19 @@ public class DocumentService {
                 direction.equals(("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC,
                 sortkey);
 
-        //Page<Document> documents = documentRepository.findByCreatedBy(user.getId(), pageable, Sort.by(Sort.Direction.ASC, "name"));
         Page<Document> documents = documentRepository.findByCreatedBy(user.getId(), pageable);
+
+        return makePageResponse(user, documents);
+    }
+
+    public PagedResponse<DocumentResponse> getDocumentsCreatedByAndDocumentName(String username, String documentname, int page, int size, String sortkey, String direction) {
+        User user = getUser(username);
+        validatePageNumberAndSize(page, size);
+
+        Pageable pageable = PageRequest.of(page, size,
+                direction.equals(("asc")) ? Sort.Direction.ASC : Sort.Direction.DESC, sortkey);
+
+        Page<Document> documents = documentRepository.findByCreatedByAndName(user.getId(), documentname, pageable);
 
         return makePageResponse(user, documents);
     }
@@ -146,6 +146,17 @@ public class DocumentService {
     public DocumentResponse getDocumentById(Long documentId) {
         Document document = documentRepository.findById(documentId).orElseThrow(
                 () -> new ResourceNotFoundException("Document", "id", documentId));
+
+        // Retrieve document creator details
+        User creator = userRepository.findById(document.getCreatedBy())
+                .orElseThrow(() -> new ResourceNotFoundException("User", "id", document.getCreatedBy()));
+
+        return ModelMapper.mapDocumentToDocumentResponse(document, creator);
+    }
+
+    public DocumentResponse getDocumentByName(String documentName) {
+        Document document = documentRepository.findByName(documentName).orElseThrow(
+                () -> new ResourceNotFoundException("Document", "name", documentName));
 
         // Retrieve document creator details
         User creator = userRepository.findById(document.getCreatedBy())
